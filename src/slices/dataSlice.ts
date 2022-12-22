@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { getData } from '../utils/api'
@@ -26,7 +25,7 @@ export interface DataState {
 const initialState: DataState = {
   data: [],
   searchQuery: '',
-  isLoading: true,
+  isLoading: false,
 }
 
 export const getInitialData = createAsyncThunk('getData', async () => {
@@ -41,11 +40,11 @@ export const dataSlice = createSlice({
     setData: (state: { data: any }, action: PayloadAction<Array<any>>) => {
       state.data = action.payload
     },
-    setSearchQuery: (state, action: PayloadAction<string>) => {
+    setSearchQuery: (state: { searchQuery: string }, action: PayloadAction<string>) => {
       state.searchQuery = action.payload
     },
-    switchLoading: (state: { isLoading: boolean }) => {
-      state.isLoading = !state.isLoading
+    setLoading: (state: { isLoading: boolean }, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload
     },
   },
   extraReducers: (builder: { addCase: (arg0: any, arg1: { (state: any, action: any): any; (state: any, action: any): any }) => void }) => {
@@ -62,7 +61,7 @@ export const dataSlice = createSlice({
 export const {
   setData,
   setSearchQuery,
-  switchLoading,
+  setLoading,
 } = dataSlice.actions
 
 export default dataSlice.reducer
